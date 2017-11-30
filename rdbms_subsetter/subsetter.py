@@ -176,7 +176,7 @@ def _by_pk(self, pk):
 
 def _completeness_score(self):
     """Scores how close a target table is to being filled enough to quit"""
-    table = (self.schema if self.schema else "") + self.name
+    table = (self.schema + '.' if self.schema else "") + self.name
     fetch_all = self.fetch_all
     requested = len(self.requested)
     required = len(self.required)
