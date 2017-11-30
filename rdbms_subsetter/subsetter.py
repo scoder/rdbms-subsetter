@@ -641,7 +641,15 @@ def generate():
     source = Db(args.source, args, schemas)
     target = Db(args.dest, args, schemas)
     if set(source.tables.keys()) != set(target.tables.keys()):
-        raise Exception('Source and target databases have different tables')
+        def missing_in_second(full, subset):
+            return ', '.join(
+                '%s.%s' % item for item in set(full).difference(subset)) or '-'
+        raise Exception(
+            'Source and target databases have different tables,'
+            ' missing in source: %s; missing in target: %s' % (
+                missing_in_second(target.tables, source.tables),
+                missing_in_second(source.tables, target.tables)
+            ))
     source.assign_target(target)
     if source.confirm():
         source.create_subset_in(target)
