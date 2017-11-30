@@ -129,7 +129,7 @@ def _random_row_gen_fn(self):
             if self.n_rows > 1000:
                 fraction = n / float(self.n_rows)
                 qry = sa.sql.select([self, ]).where(self.random_row_func() <
-                                                    fraction)
+                                                    fraction).limit(n)
                 results = self.db.conn.execute(qry).fetchall()
                 # we may stop wanting rows at any point, so shuffle them so as not to
                 # skew the sample toward those near the beginning
